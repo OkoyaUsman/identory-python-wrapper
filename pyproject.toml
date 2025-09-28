@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "identory"
-version = "0.1.1"
+version = "0.1.2"
 description = "Python Wrapper for the Identory browser automation platform"
 readme = "README.md"
 license = { text = "MIT" }
