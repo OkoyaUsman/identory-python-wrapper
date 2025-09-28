@@ -187,7 +187,7 @@ class IdentoryWrapper(ProfilesMixin, SettingsMixin, ToolsMixin, StatusMixin, Gro
         else:
             raise RuntimeError(f"Unsupported operating system: {system}")
         try:
-            process = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stderr)
+            process = subprocess.Popen(cmd, stdin=None, stdout=None, stderr=None)
             print(f"Identory started on port {self.port} (PID: {process.pid})")
             return process
         except FileNotFoundError:
