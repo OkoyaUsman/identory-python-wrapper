@@ -18,7 +18,7 @@ class PresetsMixin:
             Dict[str, Any]: Response containing list of presets with id, presetName, etc.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> presets = client.get_presets()
             >>> for preset in presets:
             ...     print(f"Preset: {preset['presetName']}")
@@ -36,7 +36,7 @@ class PresetsMixin:
             Dict[str, Any]: Preset data including id, presetName, etc.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> preset = client.get_preset("00000000-0000-0000-0000-000000000000")
             >>> print(preset)
         """
@@ -54,7 +54,7 @@ class PresetsMixin:
             Dict[str, Any]: Created preset data
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> preset = client.create_preset("New preset", useProxy=2, proxyType="socks5://", proxyHost="127.0.0.1")
         """
         data = {"presetName": preset_name}
@@ -73,7 +73,7 @@ class PresetsMixin:
             Dict[str, Any]: Updated preset data
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> preset = client.update_preset("00000000-0000-0000-0000-000000000000", proxyHost="new.proxy.com", proxyPort="8080")
         """
         return self.put(f"{PRESETS_ENDPOINT}/{preset_id}", data=kwargs)
@@ -89,7 +89,7 @@ class PresetsMixin:
             Dict[str, Any]: Empty response on success
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> client.delete_preset("00000000-0000-0000-0000-000000000000")
         """
         return self.delete(f"{PRESETS_ENDPOINT}/{preset_id}")

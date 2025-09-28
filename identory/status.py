@@ -18,7 +18,7 @@ class StatusMixin:
             Dict[str, Any]: Response containing list of statuses with id, name, etc.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> statuses = client.get_statuses()
             >>> for status in statuses:
             ...     print(f"Status: {status['name']}")
@@ -36,7 +36,7 @@ class StatusMixin:
             Dict[str, Any]: Status data including id, name etc.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> status = client.get_status("00000000-0000-0000-0000-000000000000")
             >>> print(status)
         """
@@ -57,7 +57,7 @@ class StatusMixin:
             Dict[str, Any]: Created status data
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> status = client.create_status("New Status", "primary")
             >>> print(f"Created status: {status['name']} with color {status['color']}")
         """
@@ -84,7 +84,7 @@ class StatusMixin:
             Dict[str, Any]: Updated status data
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> status = client.update_status("00000000-0000-0000-0000-000000000000", name="Updated Status", color="success")
         """
         data = {}
@@ -107,7 +107,7 @@ class StatusMixin:
             Dict[str, Any]: Empty response on success
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> client.delete_status("00000000-0000-0000-0000-000000000000")
         """
         return self.delete(f"{STATUS_ENDPOINT}/{status_id}")

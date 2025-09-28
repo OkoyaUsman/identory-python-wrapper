@@ -18,7 +18,7 @@ class SettingsMixin:
             Dict[str, Any]: Response containing default profile settings.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> settings = client.get_default_settings()
             >>> print(settings)
         """
@@ -35,7 +35,7 @@ class SettingsMixin:
             Dict[str, Any]: Updated default profile settings data
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> settings = client.update_settings(autoStartProfiles=False, maxConcurrentProfiles=5)
         """
         data = {

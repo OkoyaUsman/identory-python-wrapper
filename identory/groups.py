@@ -18,7 +18,7 @@ class GroupsMixin:
             Dict[str, Any]: Response containing list of groups with id, name, etc.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> groups = client.get_groups()
             >>> for group in groups:
             ...     print(f"Group: {group['name']}")
@@ -36,7 +36,7 @@ class GroupsMixin:
             Dict[str, Any]: Group data including id, name, etc.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> group = client.get_group("00000000-0000-0000-0000-000000000000")
             >>> print(group)
         """
@@ -57,7 +57,7 @@ class GroupsMixin:
             Dict[str, Any]: Created group data
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> group = client.create_group("New group", "#000")
             >>> print(group)
         """
@@ -84,7 +84,7 @@ class GroupsMixin:
             Dict[str, Any]: Updated group data
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> group = client.update_group("00000000-0000-0000-0000-000000000000", name="Updated Group", color="success")
         """
         data = {}
@@ -107,7 +107,7 @@ class GroupsMixin:
             Dict[str, Any]: Empty response on success
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> client.delete_group("00000000-0000-0000-0000-000000000000")
         """
         return self.delete(f"{GROUPS_ENDPOINT}/{group_id}")

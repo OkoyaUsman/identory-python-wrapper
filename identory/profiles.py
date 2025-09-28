@@ -19,7 +19,7 @@ class ProfilesMixin:
             Dict[str, Any]: Response containing profiles list.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> profiles = client.get_profiles()
             >>> for profile in profiles:
             ...     print(profile["name"])
@@ -37,7 +37,7 @@ class ProfilesMixin:
             Dict[str, Any]: Profile data including id, name, status, etc.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> profile = client.get_profile("123")
             >>> print(profile["name"])
         """
@@ -55,7 +55,7 @@ class ProfilesMixin:
             Dict[str, Any]: Created profile data
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> profile = client.create_profile(name="Test Browser")
         """
         data = {
@@ -77,7 +77,7 @@ class ProfilesMixin:
             Dict[str, Any]: Updated profile data
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> profile = client.update_profile("00000000-0000-0000-0000-000000000000", name="Jane Doe", timezone="UTC")
         """
         return self.put(f"{PROFILES_ENDPOINT}/{profile_id}", data=profile_data)
@@ -93,7 +93,7 @@ class ProfilesMixin:
             Dict[str, Any]: Empty response on success
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> client.delete_profile("00000000-0000-0000-0000-000000000000")
         """
         return self.delete(f"{PROFILES_ENDPOINT}/{profile_id}")
@@ -109,7 +109,7 @@ class ProfilesMixin:
             Dict[str, Any]: Empty response on success
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> client.delete_profiles(["00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"])
         """
         data = {
@@ -133,7 +133,7 @@ class ProfilesMixin:
             Dict[str, Any]: Response containing the started profile
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> result = client.start_profile("00000000-0000-0000-0000-000000000000")
             >>> print(result["browserWSEndpoint"])
         """
@@ -158,7 +158,7 @@ class ProfilesMixin:
             Dict[str, Any]: Empty response on success
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> result = client.stop_profile("00000000-0000-0000-0000-000000000000")
         """
         data = {
@@ -175,7 +175,7 @@ class ProfilesMixin:
             Dict[str, Any]: Response containing running profiles list.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> profiles = client.get_running_profiles()
             >>> for profile in profiles:
             ...     print(profile["id"])
@@ -193,7 +193,7 @@ class ProfilesMixin:
             Dict[str, Any]: Profile data including status.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> profile = client.get_profile_status("00000000-0000-0000-0000-000000000000")
             >>> print(profile["status"])
         """
@@ -210,7 +210,7 @@ class ProfilesMixin:
             Dict[str, Any]: Empty response on success
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> result = client.change_profile_ip("00000000-0000-0000-0000-000000000000")
         """
         return self.post(f"{PROFILES_ENDPOINT}/{profile_id}/change-ip")
@@ -227,7 +227,7 @@ class ProfilesMixin:
             Dict[str, Any]: Response containing the imported profile
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> result = client.import_profile("path/to/profile.zip")
         """
         data = {
@@ -250,7 +250,7 @@ class ProfilesMixin:
             Dict[str, Any]: Response containing the exported profile
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> result = client.export_profile("00000000-0000-0000-0000-000000000000", "path/to/profile.zip")
         """
         data = {
@@ -270,7 +270,7 @@ class ProfilesMixin:
             Dict[str, Any]: Cookies data.
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> cookies = client.get_profile_cookies("00000000-0000-0000-0000-000000000000")
             >>> print(cookies)
         """
@@ -288,7 +288,7 @@ class ProfilesMixin:
             Dict[str, Any]: Response containing the exported cookies
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> result = client.export_profile_cookies("00000000-0000-0000-0000-000000000000", "path/to/cookies.json")
         """
         data = {
@@ -311,7 +311,7 @@ class ProfilesMixin:
             Dict[str, Any]: Response containing the started warmup
             
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> result = client.start_profile_warmup("00000000-0000-0000-0000-000000000000", ["https://www.google.com", "mountain" "https://www.youtube.com", "gemini"])
             >>> print(result["browserWSEndpoint"])
         """
@@ -338,7 +338,7 @@ class ProfilesMixin:
             Dict[str, Any]: Empty response on success
         
         Example:
-            >>> client = IdentoryAPI(api_key="your-key")
+            >>> client = IdentoryWrapper(api_key="your-key")
             >>> result = client.human_typing("00000000-0000-0000-0000-000000000000", "Hello, world!")
         """
         data = {
