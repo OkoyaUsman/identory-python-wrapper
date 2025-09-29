@@ -1,5 +1,4 @@
 import os
-import sys
 import json
 import platform
 import requests
@@ -28,11 +27,12 @@ class IdentoryWrapper(ProfilesMixin, SettingsMixin, ToolsMixin, StatusMixin, Gro
     
     Args:
         access_token (str): Your Identory access token
+        auto_launch (bool, optional): Whether to auto-launch the Identory CLI. Defaults to True.
         base_url (str, optional): Base URL for the API. Defaults to production.
         timeout (int, optional): Request timeout in seconds. Defaults to 30.
     """
     
-    def __init__(self, access_token: str, base_url: str = "http://127.0.0.1", port: int = 3005, timeout: int = 30):
+    def __init__(self, access_token: str, auto_launch: bool = True, base_url: str = "http://127.0.0.1", port: int = 3005, timeout: int = 30):
         if not access_token:
             raise ValueError("Access token is required")
         self.access_token = access_token
@@ -44,7 +44,8 @@ class IdentoryWrapper(ProfilesMixin, SettingsMixin, ToolsMixin, StatusMixin, Gro
             'Content-Type': 'application/json',
             'User-Agent': '`Identory-Python-Wrapper/0.1.0'
         })
-        self._launch_cli()
+        if auto_launch:
+            self._launch_cli()
     
     def _request(self, method: str, endpoint: str, data: dict = None, **kwargs) -> Dict[str, Any]:
         """

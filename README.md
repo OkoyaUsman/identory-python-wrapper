@@ -77,6 +77,7 @@ from identory import IdentoryWrapper
 
 client = IdentoryWrapper(
     access_token="your-access-token",
+    auto_launch=True, #Default True to auto launch CLI, set False if you handled it in your app
     base_url="http://127.0.0.1",  # Default localhost
     port=3005,                    # Default port
     timeout=30                    # Default timeout
