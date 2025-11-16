@@ -9,7 +9,7 @@ A comprehensive Python wrapper for the Identory browser automation platform. Thi
 ## 🚀 Features
 
 - **Complete API Coverage** - Full support for all Identory API endpoints
-- **Pyppeteer Compatibility** - Works perfectly with Pyppeteer which is a port of JS Puppeteer
+- **Playwright Compatibility** - Works perfectly with Playwright CDP.
 - **Type Safety** - Comprehensive type hints for better IDE support
 - **Error Handling** - Custom exceptions with detailed error messages
 - **Auto-Launch** - Automatically starts the Identory CLI service
@@ -39,7 +39,7 @@ pip install -e .
 from identory import IdentoryWrapper
 
 # Initialize the client (this will auto-launch Identory CLI)
-client = IdentoryWrapper("your-access-token")
+client = IdentoryWrapper(access_token="your-access-token", auto_launch=True)
 
 # Get all profiles
 profiles = client.get_profiles()
@@ -53,13 +53,15 @@ print(f"Created profile: {profile['name']}")
 result = client.start_profile(profile['id'], headless=False)
 print(f"Profile started with WebSocket: {result['browserWSEndpoint']}")
 
-# Connect with Pyppeteer (optional)
+# Connect with Playwright-python (optional)
 import asyncio
-from pyppeteer import connect
+from playwright.async_api import async_playwright
 
 async def quick_automation():
-    browser = await connect(browserWSEndpoint=result['browserWSEndpoint'])
-    page = await browser.newPage()
+    playwright = await async_playwright().start()
+    browser = await playwright.chromium.connect_over_cdp(result['browserWSEndpoint'])
+    context = browser.contexts[0] if browser.contexts else await browser.new_context()
+    page = context.pages[0] if context.pages else await context.new_page()
     await page.goto('https://example.com')
     await browser.close()
     client.stop_profile(profile['id'])
@@ -263,31 +265,20 @@ The wrapper automatically attempts to launch the Identory CLI service when initi
 - **macOS**: `/Applications/IDENTORY.app/Contents/MacOS/IDENTORY`
 - **Linux**: `identory` (must be in PATH)
 
-### Custom Configuration
-
-```python
-client = IdentoryWrapper(
-    access_token="your-token",
-    base_url="http://localhost",  # Custom base URL
-    port=8080,                   # Custom port
-    timeout=60                   # Custom timeout
-)
-```
-
 ## 🛠️ Advanced Usage
 
-### Pyppeteer Integration
+### Playwright Integration
 
-The Identory wrapper works seamlessly with Pyppeteer for browser automation. Here's how to connect Pyppeteer to an Identory profile:
+The Identory wrapper works seamlessly with Playwright for browser automation. Here's how to connect Playwright to an Identory profile:
 
 ```python
 import asyncio
 from identory import IdentoryWrapper
-from pyppeteer import connect
+from playwright.async_api import async_playwright
 
 async def browser_automation():
     # Initialize Identory client
-    client = IdentoryWrapper("your-access-token")
+    client = IdentoryWrapper()
     
     # Start a profile
     start_response = client.start_profile(
@@ -295,28 +286,24 @@ async def browser_automation():
         headless=False
     )
     
-    # Connect Pyppeteer to the profile
-    browser = await connect(
-        browserWSEndpoint=start_response['browserWSEndpoint'], 
-        defaultViewport=None
-    )
+    # Connect Playwright to the profile
+    playwright = await async_playwright().start()
+    browser = await playwright.chromium.connect_over_cdp(result['browserWSEndpoint'])
     
     # Get a new page
-    page = await browser.newPage()
+    context = browser.contexts[0] if browser.contexts else await browser.new_context()
+    page = context.pages[0] if context.pages else await context.new_page()
     
     # Navigate to a website
     await page.goto('https://example.com', timeout=30000)
     
     # Perform actions
-    await page.type('input[name="username"]', 'random-username')
-    await page.type('input[name="passwd"]', 'random-password')
+    await page.keyboard.type('input[name="username"]', 'random-username')
+    await page.keyboard.type('input[name="passwd"]', 'random-password')
     await page.click('button[type="submit"]')
     
-    # Wait for navigation
-    await page.waitForNavigation()
-    
     # Take a screenshot
-    await page.screenshot({'path': 'webpage.png'})
+    await page.screenshot(path='webpage.png')
     
     # Close browser
     await browser.close()
@@ -413,10 +400,11 @@ mobile_preset = client.create_preset(
 
 ### Optional Dependencies
 
-For browser automation with Pyppeteer:
+For browser automation with Playwright:
 
 ```bash
-pip install pyppeteer
+pip install playwright
+playwright install
 ```
 
 ## 🤝 Contributing

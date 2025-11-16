@@ -4,6 +4,7 @@ import platform
 import requests
 import subprocess
 from typing import Dict, Any, Optional
+from requests.adapters import HTTPAdapter
 from .tools import ToolsMixin
 from .status import StatusMixin
 from .groups import GroupsMixin
@@ -26,25 +27,27 @@ class IdentoryWrapper(ProfilesMixin, SettingsMixin, ToolsMixin, StatusMixin, Gro
     of the Identory API using access token authentication.
     
     Args:
-        access_token (str): Your Identory access token
-        auto_launch (bool, optional): Whether to auto-launch the Identory CLI. Defaults to True.
+        access_token (str): Your Identory access token, mandatory if auto_launch is True.
+        auto_launch (bool, optional): Whether to auto-launch the Identory CLI. Defaults to False.
         base_url (str, optional): Base URL for the API. Defaults to production.
         timeout (int, optional): Request timeout in seconds. Defaults to 30.
     """
     
-    def __init__(self, access_token: str, auto_launch: bool = True, base_url: str = "http://127.0.0.1", port: int = 3005, timeout: int = 30):
-        if not access_token:
-            raise ValueError("Access token is required")
+    def __init__(self, access_token: Optional[str] = None, auto_launch: bool = False, base_url: str = "http://127.0.0.1", port: int = 3005, timeout: int = 30):
         self.access_token = access_token
         self.port = port
         self.base_url = f"{base_url.rstrip('/')}:{port}"
         self.timeout = timeout
         self.session = requests.Session()
+        self.session.mount('http://', HTTPAdapter(pool_maxsize=100))
+        self.session.mount('https://', HTTPAdapter(pool_maxsize=100))
         self.session.headers.update({
             'Content-Type': 'application/json',
-            'User-Agent': '`Identory-Python-Wrapper/0.1.0'
+            'User-Agent': '`Identory-Python-Wrapper/0.1.5'
         })
         if auto_launch:
+            if not access_token:
+                raise ValueError("Access token is required")
             self._launch_cli()
     
     def _request(self, method: str, endpoint: str, data: dict = None, **kwargs) -> Dict[str, Any]:
